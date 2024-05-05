@@ -1,0 +1,34 @@
+{
+  "cookiecutter": {
+    "codeowner_github_usernames": "@nlgotz",
+    "description": "Tool to Analyze usage of Mimir Metrics",
+    "project_name": "Mimir Analyzer",
+    "project_slug": "mimir-analyzer",
+    "project_python_name": "mimir_analyzer",
+    "project_python_base_version": "3.8",
+    "project_with_config_settings": "yes",
+    "generate_docs": "no",
+    "version": "0.0.1",
+    "_template": "git@github.com:networktocode-llc/cookiecutter-ntc",
+    "_output_dir": "/home/nathan/Projects",
+    "_repo_dir": "/home/nathan/.cookiecutters/cookiecutter-ntc/python",
+    "_checkout": null
+  },
+  "_cookiecutter": {
+    "codeowner_github_usernames": "@smith-ntc",
+    "description": "",
+    "project_name": "Cookiecutter Project",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}",
+    "project_python_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+    "project_python_base_version": "3.8",
+    "project_with_config_settings": [
+      "yes",
+      "no"
+    ],
+    "generate_docs": [
+      "no",
+      "yes"
+    ],
+    "version": "1.0.0"
+  }
+}

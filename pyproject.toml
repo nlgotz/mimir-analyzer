@@ -1,0 +1,108 @@
+[tool.poetry]
+authors     = ["Nate Gotz <nathan.gotz@gmail.com>"]
+description = "Tool to Analyze usage of Mimir Metrics"
+name        = "mimir-analyzer"
+version     = "0.0.1"
+
+[tool.poetry.dependencies]
+click         = "*"
+httpx         = "^0.27.0"
+pydantic      = { version = "^1.7.2", extras = ["dotenv"] }
+python        = "^3.10"
+toml          = "0.10.1"
+
+[tool.poetry.dev-dependencies]
+bandit        = "*"
+black         = "*"
+invoke        = "*"
+mock          = "*"
+pydocstyle    = "*"
+pylint        = "*"
+pytest        = "*"
+pyyaml        = "*"
+requests_mock = "*"
+toml          = "*"
+yamllint      = "*"
+# we need to pin flake8 because of package dependencies that cause it to downgrade and 
+# therefore cause issues with linting since older versions do not take .flake8 as config
+Sphinx           = "*"
+flake8           = "^3.9.2"
+myst-parser      = "*"
+sphinx-autoapi   = "*"
+sphinx-rtd-theme = "*"
+
+[tool.poetry.scripts]
+mimir_analyzer = 'mimir_analyzer.cli:main'
+
+[tool.mimir_analyzer]
+array_default   = ["a", "b", "c"]
+file            = "README.md"
+ip_address      = "192.168.0.1"
+ip_network      = "2001:db8:3c4d:15::/64"
+string_required = "some string"
+url_default     = "http://localhost"
+
+[tool.black]
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | settings.py     # This is where you define files that should not be stylized by black
+                     # the root of the project
+)
+'''
+include = '\.pyi?$'
+line-length = 120
+target-version = ['py37']
+
+[tool.pylint.master]
+ignore = ".venv"
+jobs   = 0
+
+[tool.pylint.basic]
+# No docstrings required for private methods (Pylint default), or for test_ functions, or for inner Meta classes.
+no-docstring-rgx = "^(_|test_|Meta$)"
+
+[tool.pylint.messages_control]
+# Line length is enforced by Black, so pylint doesn't need to check it.
+# Pylint and Black disagree about how to format multi-line arrays; Black wins.
+disable = """,
+    line-too-long
+    """
+
+[tool.pylint.miscellaneous]
+# Don't flag TODO as a failure, let us commit with things that still need to be done in the code
+notes = """,
+    FIXME,
+    XXX,
+    """
+
+[tool.pydocstyle]
+convention = "google"
+inherit    = false
+match      = "(?!__init__).*\\.py"
+match-dir  = "(?!tests|migrations|development)[^\\.].*"
+# D212 is enabled by default in google convention, and complains if we have a docstring like:
+# """
+# My docstring is on the line after the opening quotes instead of on the same line as them.
+# """
+# We've discussed and concluded that we consider this to be a valid style choice.
+add_ignore = "D212"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires      = ["poetry-core>=1.0.0"]
+
+[tool.pytest.ini_options]
+addopts   = "-vv --doctest-modules"
+testpaths = ["tests"]
