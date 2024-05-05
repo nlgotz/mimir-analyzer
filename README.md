@@ -12,7 +12,7 @@ MIMIR_ANALYZER_MIMIR_ADDRESS=https://mimir.example.com
 EOF
 
 mkdir exports
-docker run -u `id -u $USER` --env-file $(pwd)/mimir-analyzer.env -it --rm -v $(pwd)/exports:/local/exports ghcr.io/nlgotz/mimir-analyzer:0.0.1-py3.10 mimir_analyzer --output=output.json
+docker run -u `id -u $USER` --env-file $(pwd)/mimir-analyzer.env -it --rm -v $(pwd)/exports:/local/exports ghcr.io/nlgotz/mimir-analyzer:latest mimir_analyzer --output=output.json
 ```
 
 ## Sample Output
