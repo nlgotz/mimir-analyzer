@@ -6,7 +6,7 @@ import re
 import subprocess
 import time
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import click
 import httpx
@@ -135,9 +135,9 @@ def _run_mimirtool_collection(tenants: List[str]) -> None:
         )
 
 
-def _mimir_analyzer(output: str) -> None:
+def _mimir_analyzer(tenants: List[str], output: Optional[str] = None) -> None:
     """Run the Mimir Analyzer."""
-    tenants: List[str] = get_tenants(settings.mimir_address)
+    
 
     # Collect Information
     _run_mimirtool_collection(tenants)
@@ -188,13 +188,16 @@ def _mimir_analyzer(output: str) -> None:
 @click.option("--log-file", default=None, help="Log file to output to debug logs to")
 @click.option("--interval", help="How often to run")
 @click.option("--output", help="File to save output to")
-def main(log_level, log_file, interval, output):
+@click.option("--tenants", help="Comma Separated List of Tenants")
+def main(log_level, log_file, interval, output, tenants):
     """Entrypoint into CLI app."""
     initialize_logging(level=log_level, filename=log_file)
     log.info("Entrypoint of the CLI app.")
 
     interval: int = interval or settings.interval
     output: str = output or settings.output
+    if not tenants:
+        tenants: List[str] = get_tenants(settings.mimir_address)
 
     run: bool = True
 
@@ -205,7 +208,7 @@ def main(log_level, log_file, interval, output):
     Path("exports").mkdir(parents=True, exist_ok=True)
 
     while run:
-        _mimir_analyzer(output)
+        _mimir_analyzer(tenants, output)
         if not interval:
             run = False
         else:
