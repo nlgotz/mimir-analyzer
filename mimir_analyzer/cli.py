@@ -157,9 +157,9 @@ def _mimir_analyzer(output: str) -> None:
         }
 
         if metrics.get("in_use_metric_counts", []) is not None:
-            tenant_metrics["in_use"] = [metric["metric"] for metric in metrics["in_use_metric_counts"]]
+            tenant_metrics["in_use"] = sorted([metric["metric"] for metric in metrics["in_use_metric_counts"]])
         if metrics.get("additional_metric_counts", []) is not None:
-            tenant_metrics["not_in_use"] = [metric["metric"] for metric in metrics["additional_metric_counts"]]
+            tenant_metrics["not_in_use"] = sorted([metric["metric"] for metric in metrics["additional_metric_counts"]])
 
         metric_status[tenant] = tenant_metrics
 

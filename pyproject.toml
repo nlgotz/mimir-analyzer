@@ -2,7 +2,7 @@
 authors     = ["Nate Gotz <nathan.gotz@gmail.com>"]
 description = "Tool to Analyze usage of Mimir Metrics"
 name        = "mimir-analyzer"
-version     = "0.0.1"
+version     = "0.1.0"
 
 [tool.poetry.dependencies]
 click         = "*"
