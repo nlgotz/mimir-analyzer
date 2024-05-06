@@ -149,9 +149,14 @@ def _mimir_analyzer(output: str) -> None:
             metrics = json.load(file)
 
         tenant_metrics: dict = {
-            "total_count": metrics.get("total_active_series", 0),
-            "in_use_count": metrics.get("in_use_active_series", 0),
-            "not_in_use_count": metrics.get("additional_active_series", 0),
+            "total_metric_count": 0,
+            "in_use_metric_count": 0,
+            "not_in_use_metric_count": 0,
+            "active_series": {
+                "total": metrics.get("total_active_series", 0),
+                "in_use": metrics.get("in_use_active_series", 0),
+                "not_in_use": metrics.get("additional_active_series", 0),
+            },
             "in_use": [],
             "not_in_use": [],
         }
@@ -160,6 +165,10 @@ def _mimir_analyzer(output: str) -> None:
             tenant_metrics["in_use"] = sorted([metric["metric"] for metric in metrics["in_use_metric_counts"]])
         if metrics.get("additional_metric_counts", []) is not None:
             tenant_metrics["not_in_use"] = sorted([metric["metric"] for metric in metrics["additional_metric_counts"]])
+
+        tenant_metrics["total_metric_count"] = len(tenant_metrics["in_use"]) + len(tenant_metrics["not_in_use"])
+        tenant_metrics["in_use_metric_count"] = len(tenant_metrics["in_use"])
+        tenant_metrics["not_in_use_metric_count"] = len(tenant_metrics["not_in_use"])
 
         metric_status[tenant] = tenant_metrics
 
