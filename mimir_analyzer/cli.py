@@ -196,7 +196,9 @@ def main(log_level, log_file, interval, output, tenants):
 
     interval: int = interval or settings.interval
     output: str = output or settings.output
-    if not tenants:
+    if tenants:
+        tenants: List[str] = tenants.split(",")
+    else:
         tenants: List[str] = get_tenants(settings.mimir_address)
 
     run: bool = True
